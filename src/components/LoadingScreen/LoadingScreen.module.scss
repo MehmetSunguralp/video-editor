@@ -1,0 +1,38 @@
+@use "../../styles/variables.scss" as *;
+.loading_screen_wrapper {
+  background: $charcoal;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+
+  .loader {
+    .video_icon {
+      width: 20rem;
+      height: 20rem;
+      .loading_animation_path {
+        stroke: white;
+        stroke-width: 1;
+        fill: none;
+        stroke-dasharray: 500;
+        stroke-dashoffset: 500;
+        animation: stroke 3s linear infinite;
+      }
+    }
+  }
+}
+
+@keyframes stroke {
+  from {
+    stroke-dashoffset: 500;
+  }
+
+  to {
+    stroke-dashoffset: 450;
+  }
+}
