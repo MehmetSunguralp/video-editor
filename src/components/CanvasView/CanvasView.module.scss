@@ -1,0 +1,22 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixin.scss";
+
+.canvas_view_wrapper {
+  @include flexColumnAllCenter;
+  padding-block: 2%;
+}
+
+.controller {
+  @include flexRowAllCenter;
+  gap: 2%;
+  .control_btn {
+    background: transparent;
+    border: transparent;
+    @include svgHoverFill;
+    svg {
+      @include transitionAll;
+      width: 32px;
+      height: 32px;
+    }
+  }
+}

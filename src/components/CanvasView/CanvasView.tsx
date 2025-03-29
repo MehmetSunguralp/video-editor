@@ -2,6 +2,16 @@ import { Canvas } from "@react-three/fiber";
 import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import testVideo from "../../../videos/german-conv.mp4";
+
+import { FaPlay } from "react-icons/fa";
+import { FaPause } from "react-icons/fa";
+import { HiRewind } from "react-icons/hi";
+import { HiForward } from "react-icons/hi2";
+import { IoPlaySkipBack } from "react-icons/io5";
+import { IoPlaySkipForward } from "react-icons/io5";
+import { FaVolumeMute } from "react-icons/fa";
+import { FaVolumeOff } from "react-icons/fa";
+
 import styles from "./CanvasView.module.scss";
 
 // VideoTexture Component
@@ -92,14 +102,18 @@ const VideoTexture = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement
 // VideoController Component
 const VideoController = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement | null> }) => {
   const [volume, setVolume] = useState(100); // Store the volume as a percentage (0-100)
+  const [isPlaying, setIsPlaying] = useState<Boolean>(false);
+  const [isMuted, setIsMuted] = useState<Boolean>(false);
 
   const playPause = () => {
     const video = videoRef.current;
     if (video) {
       if (video.paused) {
         video.play();
+        setIsPlaying(true);
       } else {
         video.pause();
+        setIsPlaying(false);
       }
     }
   };
@@ -122,6 +136,7 @@ const VideoController = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElem
     const video = videoRef.current;
     if (video) {
       video.muted = !video.muted; // Toggle mute state
+      setIsMuted(video.muted);
     }
   };
 
@@ -150,17 +165,29 @@ const VideoController = ({ videoRef }: { videoRef: React.RefObject<HTMLVideoElem
 
   return (
     <div className={styles.controller}>
-      <button onClick={playPause}>Play/Pause</button>
-      <button onClick={backward}>Rewind</button>
-      <button onClick={forward}>Forward</button>
-      <button onClick={goToStart}>Go to Start</button>
-      <button onClick={goToEnd}>Go to End</button>
-      <button onClick={muteUnmute}>Mute/Unmute</button>
+      <button className={styles.control_btn} onClick={goToStart}>
+        <IoPlaySkipBack />
+      </button>
+      <button className={styles.control_btn} onClick={backward}>
+        <HiRewind />
+      </button>
+      <button className={styles.control_btn} onClick={playPause}>
+        {isPlaying ? <FaPause /> : <FaPlay />}
+      </button>
+      <button className={styles.control_btn} onClick={forward}>
+        <HiForward />
+      </button>
+      <button className={styles.control_btn} onClick={goToEnd}>
+        {" "}
+        <IoPlaySkipForward />
+      </button>
+      <button className={styles.control_btn} onClick={muteUnmute}>
+        {isMuted ? <FaVolumeOff /> : <FaVolumeMute />}
+      </button>
 
       <div>
-        <label htmlFor="volume">Volume</label>
-        <input id="volume" type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} />
-        <span>{volume}%</span>
+        <input type="range" min="0" max="100" value={volume} onChange={handleVolumeChange} />
+        {/* <span>{volume}%</span> */}
       </div>
     </div>
   );
@@ -171,8 +198,8 @@ const CanvasView = () => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   return (
-    <div>
-      <Canvas style={{ width: "800px", height: "450px" }} camera={{ position: [0, 0, 10], fov: 50 }}>
+    <div className={styles.canvas_view_wrapper}>
+      <Canvas style={{ width: "800px", height: "450px", backgroundColor: "#000" }} camera={{ position: [0, 0, 10], fov: 50 }}>
         <ambientLight />
         <VideoTexture videoRef={videoRef} />
       </Canvas>

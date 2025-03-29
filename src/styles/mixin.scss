@@ -1,0 +1,23 @@
+@mixin svgHoverFill {
+  &:hover {
+    svg {
+      fill: $burnt-sienna;
+    }
+  }
+}
+
+@mixin transitionAll {
+  transition: all 0.1s ease-in-out;
+}
+
+@mixin flexColumnAllCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flexRowAllCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
